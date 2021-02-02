@@ -1,12 +1,22 @@
-//Write the include statement for types.h here
+#include <types.h>
+#include <iostream>
 
-//Write include for capturing input from keyboard and displaying output to screen
-
-
+using std::cin;
+using std::cout;
+using std::endl;
 
 int main() 
 {
+	int num, result;
+	int num1 = 4;
+
+	cout << "Enter an integer to multiply it by 5 and see the result: ";
+	cin >> num;
+	result = multiply_numbers(num);
+	cout << num << " * 5 = " << result << endl;
+
+	result = multiply_numbers(num1);
+	cout << "Also, " << num1 << " * 5 = " << result << endl;
 
 	return 0;
 }
-
