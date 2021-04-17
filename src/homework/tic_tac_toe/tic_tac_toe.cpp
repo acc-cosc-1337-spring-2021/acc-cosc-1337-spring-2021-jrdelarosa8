@@ -31,24 +31,6 @@ void TicTacToe::start_game(std::string first_player)
     clear_board();
 }
 
-void TicTacToe::display_board() const
-{
-    for (std::size_t i = 1; i <= pegs.size(); i++)
-    {
-        if(i % 3 == 0)
-        {
-            std::cout << pegs[i - 1];
-            std::cout << std::endl;
-        }
-        else
-        {
-            std::cout << pegs[i - 1];
-        }
-    }
-
-    std::cout << std::endl;
-}
-
 std::string TicTacToe::get_player() const
 {
     return player;
@@ -197,4 +179,63 @@ bool TicTacToe::check_diagonal_win() const
     {
         return false;
     }
+}
+
+std::ostream& operator<<(std::ostream& out, const TicTacToe& game)
+{
+    for (std::size_t i = 1; i <= game.pegs.size(); i++)
+    {
+        if(i % 3 == 0)
+        {
+            out << game.pegs[i - 1];
+            out << std::endl;
+        }
+        else
+        {
+            out << game.pegs[i - 1];
+        }
+    }
+
+    out << std::endl;
+
+    return out;
+}
+
+std::istream& operator>>(std::istream& in, TicTacToe& game)
+{
+    std::string choice;
+    int position = 0;
+
+    do {
+        std::cout << "Enter X or O to select the first player: ";
+        in >> choice;
+
+        if (choice == "x")
+        {
+            choice = "X";
+        }
+        else if (choice == "o")
+        {
+            choice = "O";
+        }
+    } while (!(choice == "X" || choice == "O"));
+
+    game.start_game(choice);
+
+    do {
+        std::cout << "Your turn player " << game.get_player() << ". Enter a position on the board between 1 and 9: ";
+        in >> position;
+
+        while (position > 9 || position < 1)
+        {
+            std::cout << "Invalid selection, please enter a position between 1 and 9: ";
+            in >> position;
+        }
+
+        game.mark_board(position);
+        std::cout << game;
+
+    } while (!(game.game_over()));
+
+    return in;
 }
