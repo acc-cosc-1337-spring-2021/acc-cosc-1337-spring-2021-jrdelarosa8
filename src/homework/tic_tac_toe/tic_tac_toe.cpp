@@ -3,12 +3,12 @@
 
 bool TicTacToe::game_over()
 {
-    if (check_column_win() || check_row_win() || check_diagonal_win())
+    if (this->check_column_win() || this->check_row_win() || this->check_diagonal_win())
     {
-        set_winner();
+        this->set_winner();
         return true;
     }
-    else if (check_board_full())
+    else if (this->check_board_full())
     {
         winner = "C";
         return true;
@@ -45,20 +45,22 @@ bool TicTacToe::check_board_full()
 {
     int count = 0;
 
-    for (auto i: pegs)
+    for (auto i: this->pegs)
     {
-        if(i != " ")
+        if (i != " ")
         {
             count += 1;
         }
     }
 
-    if(count == 9)
+    if (this->pegs.size() == count)
     {
         return true;
     }
-
-    return false;
+    else
+    {
+        return false;
+    }
 }
 
 void TicTacToe::clear_board()
@@ -95,104 +97,49 @@ void TicTacToe::set_winner()
 
 bool TicTacToe::check_column_win() const
 {
-    if ((pegs[0] == "X") && (pegs[3] == "X") && (pegs[6] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[1] == "X") && (pegs[4] == "X") && (pegs[7] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[2] == "X") && (pegs[5] == "X") && (pegs[8] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[0] == "O") && (pegs[3] == "O") && (pegs[6] == "O"))
-    {
-        return true;
-    }
-    else if ((pegs[1] == "O") && (pegs[4] == "O") && (pegs[7] == "O"))
-    {
-        return true;
-    }
-    else if ((pegs[2] == "O") && (pegs[5] == "O") && (pegs[8] == "O"))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 bool TicTacToe::check_row_win() const
 {
-    if ((pegs[0] == "X") && (pegs[1] == "X") && (pegs[2] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[3] == "X") && (pegs[4] == "X") && (pegs[5] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[6] == "X") && (pegs[7] == "X") && (pegs[8] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[0] == "O") && (pegs[1] == "O") && (pegs[2] == "O"))
-    {
-        return true;
-    }
-    else if ((pegs[3] == "O") && (pegs[4] == "O") && (pegs[5] == "O"))
-    {
-        return true;
-    }
-    else if ((pegs[6] == "0") && (pegs[7] == "0") && (pegs[8] == "0"))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 bool TicTacToe::check_diagonal_win() const
 {
-    if ((pegs[0] == "X") && (pegs[4] == "X") && (pegs[8] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[6] == "X") && (pegs[4] == "X") && (pegs[2] == "X"))
-    {
-        return true;
-    }
-    else if ((pegs[0] == "O") && (pegs[4] == "O") && (pegs[8] == "O"))
-    {
-        return true;
-    }
-    else if ((pegs[6] == "O") && (pegs[4] == "O") && (pegs[2] == "O"))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 std::ostream& operator<<(std::ostream& out, const TicTacToe& game)
 {
-    for (std::size_t i = 1; i <= game.pegs.size(); i++)
+    if (game.pegs.size() == 9)
     {
-        if(i % 3 == 0)
+        for (std::size_t i = 1; i <= game.pegs.size(); i++)
         {
-            out << game.pegs[i - 1];
-            out << std::endl;
+            if(i % 3 == 0)
+            {
+                out << game.pegs[i - 1];
+                out << std::endl;
+            }
+            else
+            {
+                out << game.pegs[i - 1];
+            }
         }
-        else
+    }
+    else if (game.pegs.size() == 16)
+    {
+        for (std::size_t i = 1; i <= game.pegs.size(); i++)
         {
-            out << game.pegs[i - 1];
+            if(i % 4 == 0)
+            {
+                out << game.pegs[i - 1];
+                out << std::endl;
+            }
+            else
+            {
+                out << game.pegs[i - 1];
+            }
         }
     }
 
@@ -222,20 +169,40 @@ std::istream& operator>>(std::istream& in, TicTacToe& game)
 
     game.start_game(choice);
 
-    do {
-        std::cout << "Your turn player " << game.get_player() << ". Enter a position on the board between 1 and 9: ";
-        in >> position;
-
-        while (position > 9 || position < 1)
-        {
-            std::cout << "Invalid selection, please enter a position between 1 and 9: ";
+    if (game.pegs.size() == 9)
+    {
+        do {
+            std::cout << "Your turn player " << game.get_player() << ". Enter a position on the board between 1 and 9: ";
             in >> position;
-        }
 
-        game.mark_board(position);
-        std::cout << game;
+            while (position > 9 || position < 1)
+            {
+                std::cout << "Invalid selection, please enter a position between 1 and 9: ";
+                in >> position;
+            }
 
-    } while (!(game.game_over()));
+            game.mark_board(position);
+            std::cout << game;
+
+        } while (!(game.game_over()));
+    }
+    else
+    {
+        do {
+            std::cout << "Your turn player " << game.get_player() << ". Enter a position on the board between 1 and 16: ";
+            in >> position;
+
+            while (position > 16 || position < 1)
+            {
+                std::cout << "Invalid selection, please enter a position between 1 and 16: ";
+                in >> position;
+            }
+
+            game.mark_board(position);
+            std::cout << game;
+
+        } while (!(game.game_over()));
+    }
 
     return in;
 }

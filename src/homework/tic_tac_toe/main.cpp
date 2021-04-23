@@ -1,4 +1,6 @@
 #include "tic_tac_toe.h"
+#include "tic_tac_toe_3.h"
+#include "tic_tac_toe_4.h"
 #include "tic_tac_toe_manager.h"
 #include <iostream>
 
@@ -8,20 +10,36 @@ int main()
 {
     std::string choice;
     std::string play_again;
-    int position, o = 0, x = 0, t = 0;
+    int game_type = 0, o = 0, x = 0, t = 0;
 
     TicTacToeManager manager;
-    TicTacToe game;
+    unique_ptr<TicTacToe> game;
 
     do {
 
-        cin >> game;
+        while (game_type < 3 || game_type > 4)
+        {
+            cout << "What size grid would you like to play on?" << endl;
+            cout << "Enter '3' for 3 x 3, enter '4' for 4 x 4: ";
+            cin >> game_type;
+        }
+
+        if (game_type == 3)
+        {
+            game = make_unique<TicTacToe3>();
+        }
+        else
+        {
+            game = make_unique<TicTacToe4>();
+        }
+
+        cin >> *game;
 
         cout << "Game over!" << std::endl;
 
-        if (game.get_winner() == "X" || game.get_winner() == "O")
+        if (game->get_winner() == "X" || game->get_winner() == "O")
         {
-            cout << "Winner is player " << game.get_winner() << endl;
+            cout << "Winner is player " << game->get_winner() << endl;
         }
         else
         {
