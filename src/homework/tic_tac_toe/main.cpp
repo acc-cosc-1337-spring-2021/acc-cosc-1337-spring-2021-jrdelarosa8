@@ -2,6 +2,7 @@
 #include "tic_tac_toe_3.h"
 #include "tic_tac_toe_4.h"
 #include "tic_tac_toe_manager.h"
+#include "tic_tac_toe_data.h"
 #include <iostream>
 
 using std::cout; using std::cin; using std::endl;
@@ -10,12 +11,14 @@ int main()
 {
     std::string choice;
     std::string play_again;
-    int game_type = 0, o = 0, x = 0, t = 0;
+    int game_type, o = 0, x = 0, t = 0;
 
-    TicTacToeManager manager;
+    TicTacToeData data;
+    TicTacToeManager manager(data);
     unique_ptr<TicTacToe> game;
 
     do {
+        game_type = 0;
 
         while (game_type < 3 || game_type > 4)
         {

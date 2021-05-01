@@ -12,8 +12,10 @@ friend std::ostream& operator<<(std::ostream& out, const TicTacToe& game);
 friend std::istream& operator>>(std::istream& in, TicTacToe& game);
 
 public:
+    TicTacToe(const std::vector<std::string>& p, const std::string& w){ pegs = p; winner = w; };
     TicTacToe(int size) : pegs(size * size, " "){};
     bool game_over();
+    std::vector<std::string> get_pegs() const{ return pegs; };
     void mark_board(int position);
     void start_game(std::string first_player);
 
